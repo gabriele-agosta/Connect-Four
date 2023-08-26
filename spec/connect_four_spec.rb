@@ -1,12 +1,21 @@
 require "./lib/connect_four.rb"
 
 describe ConnectFour do 
+  let(:grid) do
+    white_circle = "\u26AA"
+    Array.new(7) { [white_circle] * 6 }
+  end
+
+  let(:game) { ConnectFour.new }
+
   describe "#create_grid" do 
     it "returns a clean grid" do 
-      game = ConnectFour.new
-      grid = Array.new
-      white_circle = "\u26AA"
-      6.times { grid.append([white_circle, white_circle, white_circle, white_circle, white_circle, white_circle, white_circle]) }
+      expect(game.send(:create_grid)).to eql(grid)
+    end
+  end
+
+  describe "#print_grid" do
+    it "prints the grid" do
       expect(game.send(:create_grid)).to eql(grid)
     end
   end
@@ -26,6 +35,25 @@ describe ConnectFour do
     end
   end 
 
+  describe "#choose_token" do
+    it "returns red circle for player 1" do
+      red_circle = "\u1F534"
+      expect(game.send(:choose_token, 1)).to eql(red_circle)
+    end
+    
+    it "returns yellow circle for player 2" do
+      yellow_circle = "\u1F7E1"
+      expect(game.send(:choose_token, 2)).to eql(yellow_circle) 
+    end
+  end
+
+  describe "#insert_token" do
+    it "inserts a token on the first column" do
+      
+    end
+  end
+
   # describe "#game_over?" do end 
-  # describe "#insert_token" do end
+  # -o la grid è piena
+  # -oppure devo controllare se qualcuno ha vinto
 end
