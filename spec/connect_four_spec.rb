@@ -14,12 +14,6 @@ describe ConnectFour do
     end
   end
 
-  describe "#print_grid" do
-    it "prints the grid" do
-      expect(game.send(:create_grid)).to eql(grid)
-    end
-  end
-
   describe "#get_input" do 
     it "returns player input" do
       game = ConnectFour.new
@@ -37,19 +31,22 @@ describe ConnectFour do
 
   describe "#choose_token" do
     it "returns red circle for player 1" do
-      red_circle = "\u1F534"
+      red_circle = "\u{1F534}"
       expect(game.send(:choose_token, 1)).to eql(red_circle)
     end
     
     it "returns yellow circle for player 2" do
-      yellow_circle = "\u1F7E1"
+      yellow_circle = "\u{1F7E1}"
       expect(game.send(:choose_token, 2)).to eql(yellow_circle) 
     end
   end
 
   describe "#insert_token" do
     it "inserts a token on the first column" do
-      
+      grid[0][0] = "\u{1F534}"
+      game.send(:insert_token, 0, 1)
+      actual_grid = game.instance_variable_get(:@grid)
+      expect(actual_grid).to eql(grid)
     end
   end
 

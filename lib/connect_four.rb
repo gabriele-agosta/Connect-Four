@@ -11,31 +11,37 @@ class ConnectFour
   end
 
   def print_grid()
-    @grid.each do |column|
-      row_cell = column.map { |cell| cell }.join(" ")
-      puts row_cell
+    5.downto(0) do |i|
+      column = []
+      for j in 0..6
+        column.append(@grid[j][i])
+      end
+      column = column.map { |cell| cell }.join(" ")
+      puts column
     end
   end
 
   def insert_token(column, player)
     token = choose_token(player)
+    @grid[column][@first_unused_spot[column]] = token
+    @first_unused_spot[column] += 1
+  end
+
+  def game_over?()
   end
 
   private 
 
   def create_grid
-    grid = Array.new
     white_circle = "\u26AA"
-    7.times { grid.append([white_circle, white_circle, white_circle, white_circle, white_circle, white_circle]) }
+    grid = Array.new(7) { [white_circle] * 6 }
     return grid
   end
 
   def choose_token(player)
-    yellow_circle = "\u1F7E1"
-    red_circle = "\u1F534"
-    return player == 1 ? red_circle : yellow_circle
-  end
+    yellow_circle = "\u{1F7E1}"
+    red_circle = "\u{1F534}"
 
-  def game_over?()
+    return player == 1 ? red_circle : yellow_circle
   end
 end
