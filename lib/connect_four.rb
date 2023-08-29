@@ -1,5 +1,8 @@
 class ConnectFour
   def initialize() 
+    @white_circle = "\u26AA"
+    @yellow_circle = "\u{1F7E1}"
+    @red_circle = "\u{1F534}"
     @grid = create_grid()
     @first_unused_spot = [0, 0, 0, 0, 0, 0, 0]
   end
@@ -27,21 +30,66 @@ class ConnectFour
     @first_unused_spot[column] += 1
   end
 
-  def game_over?()
+  def game_over?(player)
+    return false if @grid.flatten.all? (@white_circle)
+    return "The game ended in a tie!" unless @grid.flatten.any? @white_circle
+
+    print_result(player) if check_horizontally() || check_vertically() || check_obliquely()
   end
 
   private 
 
   def create_grid
-    white_circle = "\u26AA"
-    grid = Array.new(7) { [white_circle] * 6 }
-    return grid
+    return Array.new(7) { [@white_circle] * 6 }
   end
 
   def choose_token(player)
-    yellow_circle = "\u{1F7E1}"
-    red_circle = "\u{1F534}"
+    return player == 1 ? @red_circle : @yellow_circle
+  end
 
-    return player == 1 ? red_circle : yellow_circle
+  def check_horizontally()
+    3.times do |i|
+      4.times do |j|
+        elements = []
+        4.times do |k|
+          elements.append(@grid[j+k][i])
+        end
+        return true if elements.all? (@red_circle)
+        return true if elements.all? (@yellow_circle)
+      end
+    end
+    return false
+  end
+
+  def check_vertically()
+    @grid.each do |column|
+      5.times do |i|
+        elements = column.slice(i, i+3)
+        return true if elements.all? (@red_circle)
+        return true if elements.all? (@yellow_circle)
+      end
+    end
+
+    return false
+  end
+
+  def check_obliquely()
+    3.times do |i|
+      4.times do |j|
+        elements = []
+        4.times do |k|
+          elements.append(@grid[j+k][i+k])
+        end
+        return true if elements.all? (@red_circle)
+        return true if elements.all? (@yellow_circle)
+      end
+    end
+    return false
+  end
+
+  def print_result(player)
+    print_grid()
+    puts "Congratulations Player #{player}, you won!"
+    return true
   end
 end
